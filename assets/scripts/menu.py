@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import requests
+from requests import get
 from json import dump
 
 def updateDate(attDate, menuNum):
@@ -10,9 +10,10 @@ def updateDate(attDate, menuNum):
         dump(date, json_file)
 
 def getAttDate():
+    
     url = 'https://www.ufca.edu.br/assuntos-estudantis/refeitorio-universitario/cardapios/'
     
-    htmlString = requests.get(url)
+    htmlString = get(url)
     html = BeautifulSoup(htmlString.content, "html.parser")
     div = html.find('div',"ui accordion")
     attDate = div.find_all('p').pop().text
@@ -26,9 +27,10 @@ def getAttDate():
     return date
     
 def getMenu():
+    
     url = 'https://www.ufca.edu.br/assuntos-estudantis/refeitorio-universitario/cardapios/'
     
-    htmlString = requests.get(url)
+    htmlString = get(url)
     html = BeautifulSoup(htmlString.content, "html.parser")
     div = html.find('div',"ui accordion")
     attDate = div.find_all('p').pop().text
@@ -38,12 +40,13 @@ def getMenu():
     
     for a in aList:
         menus.append(a.get('href'))
-    menu = requests.get(menus.pop())
+    menu = get(menus.pop())
     
-    with open("assets/menus/menu.pdf",'wb',encoding='utf-8') as pdf:
+    with open("assets/menus/menu.pdf",'wb') as pdf:
          pdf.write(menu.content)
 
     updateDate(attDate, len(aList))
+    
 def main():
     getMenu()
 
