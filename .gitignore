@@ -152,3 +152,5 @@ cython_debug/
 #.idea/
 assets/json/token.json
 assets/menus/menu.pdf
+Menubot-UFCA.zip
+squarecloud.app
