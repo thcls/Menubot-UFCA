@@ -150,7 +150,9 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
-assets/json/token.json
 assets/menus/menu.pdf
 Menubot-UFCA.zip
 squarecloud.app
+assets/menus/menuImg.png
+assets/json/token.json
+assets/json/date.json
