@@ -1,17 +1,22 @@
 from bs4 import BeautifulSoup
 from requests import get
 from json import dump
+from assets.scripts.utils import menuToImage
+#from utils import menuToImage
 
-def updateDate(attDate, menuNum):
-    date = { 'date': attDate,
-            'length': menuNum
-            }
+url = 'https://www.ufca.edu.br/assuntos-estudantis/refeitorio-universitario/cardapios/'
+
+def setDate(attDate, menuNum, title, link):
+    date = { 
+        'date': attDate,
+        'length': menuNum,
+        'title': title,
+        'link': link
+    }
     with open('assets/json/date.json','w' ,encoding='utf-8') as json_file:
         dump(date, json_file)
 
 def getAttDate():
-    
-    url = 'https://www.ufca.edu.br/assuntos-estudantis/refeitorio-universitario/cardapios/'
     
     htmlString = get(url)
     html = BeautifulSoup(htmlString.content, "html.parser")
@@ -20,15 +25,22 @@ def getAttDate():
     aList = div.find_all('a')
     menuNum = len(aList)
     
-    date = { 
+    title = div.find_all("div","content")
+    title = title[-1].find('p').text
+    
+    title = title.replace('PRAE/RU/UFCA – ','')
+    attDate = attDate.replace('Ultima atualização: ','')
+
+    link = aList.pop().get('href')
+    
+    return { 
         'date': attDate,
-        'length': menuNum
-        }
-    return date
-    
+        'length': menuNum,
+        'title':title,
+        'link': link
+    }
+
 def getMenu():
-    
-    url = 'https://www.ufca.edu.br/assuntos-estudantis/refeitorio-universitario/cardapios/'
     
     htmlString = get(url)
     html = BeautifulSoup(htmlString.content, "html.parser")
@@ -36,20 +48,25 @@ def getMenu():
     attDate = div.find_all('p').pop().text
     aList = div.find_all('a')
     
+    title = div.find_all("div","content")
+    title = title[-1].find('p').text
+    title = title.replace('PRAE/RU/UFCA – ','')
+    
+    attDate = attDate.replace('Ultima atualização: ','')
+    
     menus = []
     
     for a in aList:
         menus.append(a.get('href'))
-    menu = get(menus.pop())
+    link = menus.pop()
+    menu = get(link)
     
     with open("assets/menus/menu.pdf",'wb') as pdf:
-         pdf.write(menu.content)
-
-    updateDate(attDate, len(aList))
+        pdf.write(menu.content)
     
-def main():
-    getMenu()
-
+    menuToImage()
+    
+    setDate(attDate, len(aList), title, link)
 
 if __name__ == '__main__':
-    main()
+    print(getMenu())
