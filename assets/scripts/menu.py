@@ -69,4 +69,4 @@ def getMenu():
     setDate(attDate, len(aList), title, link)
 
 if __name__ == '__main__':
-    print(getMenu())
+    getMenu()
