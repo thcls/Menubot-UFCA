@@ -10,25 +10,18 @@ test = False
 token = utils.getToken()
 
 if test == False:
-    channelId = 1097001318821920858
-    roleId = 957726404840153228
-    logChannelId = 1096596708764418138
-    menuInterval = 14400 #segundoos
     config = {
         "channelId": 1097001318821920858,
         "roleId": 957726404840153228,
         "logChannelId": 1096596708764418138,
-        "menuInterval": 14400 #segundoos
+        "menuInterval": 60 #segundoos
     }
 else:
-    channelId = 1096596708764418138
-    logChannelId = 1096596708764418138
-    menuInterval = 10 #segundoos
     config = {
         "channelId": 1096596708764418138,
         "roleId": 957726404840153228,
         "logChannelId": 1096596708764418138,
-        "menuInterval": 10 #segundoos
+        "menuInterval": 0.2 #segundoos
     }
     
 run = [False]
@@ -54,6 +47,7 @@ async def startmenu(context):
     
     while run[0]:
         try:
+            await logChannel.send(config["menuInterval"])
             dateAtt = menu.getAttDate()
         except Exception as  error:
             logChannel = client.get_channel(config['logChannelId'])
@@ -89,7 +83,11 @@ async def startmenu(context):
                 logChannel = client.get_channel(config['logChannelId'])
                 await logChannel.send(error)
                 
-        await asyncio.sleep(menuInterval)
+        await asyncio.sleep(config["menuInterval"])
+        if config["menuInterval"] >= 7200:
+            config["menuInterval"] = 60
+        else:
+            config["menuInterval"] *= 2
 
 @client.command()
 async def stopmenu(context):
@@ -105,10 +103,11 @@ async def stopmenu(context):
 async def ping(context):
     with open('assets/json/date.json',encoding='utf-8') as json_file:
             date = load(json_file)
+    message = '{} : {}.'.format(date['date'], config["menuInterval"])
     channel = client.get_channel(config['logChannelId'])
     try:
-        await channel.send(date['date'])
+        await channel.send(message)
     except Exception as  error:
         pass
-    
+        
 client.run(token)
