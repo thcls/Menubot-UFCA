@@ -1,8 +1,6 @@
 # Menubot UFCA
 
-Bot do discord que envia o cardápio do refeitório universitário da UFCA em um servidor específico do Discord.
-
-O bot envia o cardápio da semana atual e avisa sobre alterações.
+Bot do discord que envia o cardápio do refeitório universitário da UFCA em um servidor específico do Discord. O bot envia o cardápio da semana atual e avisa sobre alterações.
 
 ## Mensagem
 
