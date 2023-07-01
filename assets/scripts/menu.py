@@ -16,7 +16,7 @@ def setDate(attDate, menuNum, title, link):
     with open('assets/json/date.json','w' ,encoding='utf-8') as json_file:
         dump(date, json_file)
 
-def getAttDate():
+async def getAttDate():
     
     htmlString = get(url)
     html = BeautifulSoup(htmlString.content, "html.parser")
@@ -40,7 +40,7 @@ def getAttDate():
         'link': link
     }
 
-def getMenu():
+async def getMenu():
     
     htmlString = get(url)
     html = BeautifulSoup(htmlString.content, "html.parser")
