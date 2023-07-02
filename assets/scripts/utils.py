@@ -16,7 +16,7 @@ def randomLines() -> str:
         lines = load(json_file)
     return lines[str(randint(1, 48))]
 
-def saveChannelId(channelId, roleId):
+def saveChannelId(channelId, roleId) -> None:
     ids = {
         "channel": channelId,
         "role": roleId
@@ -26,7 +26,7 @@ def saveChannelId(channelId, roleId):
     channelsIds.append(ids)
     setChannelids(channelsIds)
 
-def removeChannel(channelId):
+def removeChannel(channelId) -> None:
     channelsIds = getChannelids()
     channelsQtd = len(channelsIds)
     for i in range(0, channelsQtd - 1):
@@ -34,12 +34,12 @@ def removeChannel(channelId):
             channelsIds[i] = channelsIds.pop()
             return
 
-def getChannelids():
+def getChannelids() -> list:
     with open('assets/json/channels.json') as json_file:
         channelsIds = load(json_file)
     return channelsIds
 
-def setChannelids(channelsIds):
+def setChannelids(channelsIds) -> None:
     with open('assets/json/channels.json') as json_file:
         dump(channelsIds, json_file)
 
@@ -48,5 +48,25 @@ def timefunction(config) -> None:
         config["menuInterval"] = 60
     else:
         config["menuInterval"] *= 2
+
+def getConfig(test) -> dict:
+    if test == False:
+        config = {
+            "channelId": 1097001318821920858,
+            "roleId": 957726404840153228,
+            "logChannelId": 1124513287791448115,
+            "menuInterval": 60, #segundoos
+            "run": False
+        }
+    else:
+        config = {
+            "channelId": 958543755613458462,
+            "roleId": 957726404840153228,
+            "logChannelId": 958543755613458462,
+            "menuInterval": 0.2, #segundoos
+            "run": False
+        }
+    return config
+
 if __name__ == '__main__':
     menuToImage()

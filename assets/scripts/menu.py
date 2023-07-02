@@ -6,17 +6,11 @@ from assets.scripts.utils import menuToImage
 
 url = 'https://www.ufca.edu.br/assuntos-estudantis/refeitorio-universitario/cardapios/'
 
-def setDate(attDate, menuNum, title, link):
-    date = { 
-        'date': attDate,
-        'length': menuNum,
-        'title': title,
-        'link': link
-    }
+def setDate(date) -> None:
     with open('assets/json/date.json','w' ,encoding='utf-8') as json_file:
         dump(date, json_file)
 
-async def getAttDate():
+async def getAttDate() -> dict:
     
     htmlString = get(url)
     html = BeautifulSoup(htmlString.content, "html.parser")
@@ -40,33 +34,17 @@ async def getAttDate():
         'link': link
     }
 
-async def getMenu():
+async def getMenu() -> None:
+    attDate = await getAttDate()
     
-    htmlString = get(url)
-    html = BeautifulSoup(htmlString.content, "html.parser")
-    div = html.find('div',"ui accordion")
-    attDate = div.find_all('p').pop().text
-    aList = div.find_all('a')
-    
-    title = div.find_all("div","content")
-    title = title[-1].find('p').text
-    title = title.replace('PRAE/RU/UFCA – ','')
-    
-    attDate = attDate.replace('Ultima atualização: ','')
-    
-    menus = []
-    
-    for a in aList:
-        menus.append(a.get('href'))
-    link = menus.pop()
-    menu = get(link)
+    menu = get(attDate["link"])
     
     with open("assets/menus/menu.pdf",'wb') as pdf:
         pdf.write(menu.content)
     
     menuToImage()
     
-    setDate(attDate, len(aList), title, link)
+    setDate(attDate)
 
 if __name__ == '__main__':
     getMenu()
