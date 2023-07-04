@@ -55,6 +55,7 @@ def getConfig(test) -> dict:
             "channelId": 1097001318821920858,
             "roleId": 957726404840153228,
             "logChannelId": 1124513287791448115,
+            "mainChannelId": 1125280022110933024,
             "menuInterval": 60, #segundoos
             "run": False
         }
@@ -64,6 +65,7 @@ def getConfig(test) -> dict:
             "roleId": 957726404840153228,
             "logChannelId": 958543755613458462,
             "menuInterval": 0.2, #segundoos
+            "mainChannelId":1125280022110933024,
             "run": False
         }
     return config

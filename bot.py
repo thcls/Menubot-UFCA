@@ -1,13 +1,13 @@
 import discord
 from json import load
 from asyncio import sleep
-from discord.ext import commands, tasks
+from discord.ext import commands
 from dotenv import load_dotenv
 from os import getenv
 from assets.scripts import menu
 from assets.scripts import utils
 
-test = True
+test = False
 config = utils.getConfig(test)
 
 load_dotenv()
@@ -59,7 +59,7 @@ async def running(config) -> None:
 @client.event
 async def on_ready() -> None:
     try:
-        synced = await client.tree.sync()
+        await client.tree.sync()
         print('We have logged')  
     except Exception as error:
         print(error)
